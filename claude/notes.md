@@ -213,24 +213,114 @@ Start Development
 
 ---
 
-# 4. Terminal Commands
+## 3. Authentication & API Key Configuration
 
-Terminal commands are used to launch Claude Code and control sessions from the command line.
+Claude Code supports different authentication methods:
 
-## Basic commands
+| Authentication | Description |
+|---|---|
+| Claude subscription | Sign in using an eligible Claude account |
+| Anthropic API key | Authenticate using an Anthropic Console API key |
+| Company AI gateway | Use organization-provided credentials and gateway configuration |
+| Cloud providers | Integrate with supported providers such as AWS Bedrock and Google Vertex AI |
+
+### Configure Anthropic API Key
+
+For a standard Anthropic API key:
+
+```bash
+export ANTHROPIC_API_KEY='your-api-key'
+```
+
+Verify that the variable is configured without printing the secret:
+
+```bash
+if [ -n "$ANTHROPIC_API_KEY" ]; then
+  echo "API key configured"
+else
+  echo "API key missing"
+fi
+```
+
+### Configure API Key Permanently (macOS Zsh)
+
+Add the following line to `~/.zshrc`:
+
+```bash
+export ANTHROPIC_API_KEY='your-api-key'
+```
+
+Reload the shell configuration:
+
+```bash
+source ~/.zshrc
+```
+
+**Security best practices:**
+- Never commit API keys to Git.
+- Never share API keys in screenshots or chat.
+- Never print API keys in terminal logs.
+- Use company-approved credentials.
+- Follow company security policies.
+- Avoid storing company secrets in shell configuration if your organization requires managed secret storage.
+
+> Important: Company gateway keys may require additional configuration such as `ANTHROPIC_BASE_URL`. Confirm the required endpoint and authentication method with DevOps before configuring them.
+
+## 4. Start Claude Code
+
+Navigate to your project directory:
+
+```bash
+cd /path/to/your/project
+```
+
+Start Claude Code:
+
+```bash
+claude
+```
+
+Claude Code starts an interactive terminal session and can access the current project directory.
+
+### Start Claude with a prompt
+
+```bash
+claude "Explain the architecture of this project"
+```
+
+### Continue the previous conversation
+
+```bash
+claude --continue
+```
+
+### Resume a previous conversation
+
+```bash
+claude --resume
+```
+
+## 5. Most Used Terminal Commands
 
 | Command | Description |
 |---|---|
-| `claude` | Start interactive session |
-| `claude "Explain this project"` | Start with an initial prompt |
+| `claude` | Start Claude Code |
 | `claude --version` | Display installed version |
-| `claude doctor` | Diagnose installation issues |
 | `claude update` | Update Claude Code |
-| `claude -h` | Display help |
-| `claude -p "Explain this function"` | Run a non-interactive prompt |
-| `claude -c` | Continue the most recent session |
-| `claude -r` | Resume a previous session |
-| `claude mcp` | Manage MCP server configuration |
+| `claude doctor` | Diagnose installation and configuration |
+| `claude --help` | Display CLI help |
+| `claude "prompt"` | Start with an initial prompt |
+| `claude --continue` | Continue the most recent conversation |
+| `claude --resume` | Resume a previous conversation |
+| `claude -p "prompt"` | Execute a prompt in non-interactive mode |
+
+## 10. Official Documentation
+
+- [Claude Code Documentation](https://code.claude.com/docs)
+- [Installation Guide](https://code.claude.com/docs/en/setup)
+- [Authentication Guide](https://code.claude.com/docs/en/authentication)
+- [CLI Reference](https://code.claude.com/docs/en/cli-reference)
+- [Interactive Mode](https://code.claude.com/docs/en/interactive-mode)
 
 ## Useful CLI flags
 
