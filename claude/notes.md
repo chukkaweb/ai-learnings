@@ -250,11 +250,225 @@ Add the following line to `~/.zshrc`:
 export ANTHROPIC_API_KEY='your-api-key'
 ```
 
+and 
+
 Reload the shell configuration:
 
 ```bash
 source ~/.zshrc
 ```
+
+## 1. What is an API Key?
+
+An API key is a credential used by an application or developer tool to authenticate with an API service.
+
+In Claude Code, the API key allows the CLI to communicate with an Anthropic API endpoint or an organization-managed AI gateway.
+
+### Why do we need an API key?
+
+- Authenticate requests sent to the AI service.
+- Identify the application or organization making requests.
+- Authorize access to configured AI models.
+- Track API usage and associated costs.
+- Apply organizational usage limits and policies.
+- Route requests through a company-managed AI gateway.
+
+## 2. What Can We Do Using an API Key?
+
+Once authenticated, Claude Code can send prompts to supported AI models and receive responses.
+
+Common use cases:
+
+| Use Case | Example |
+|---|---|
+| Code generation | Generate Angular components and React hooks |
+| Code explanation | Understand an existing codebase |
+| Code review | Identify bugs and code quality issues |
+| Debugging | Analyse errors and suggest fixes |
+| Refactoring | Improve existing implementations |
+| Unit testing | Generate Jasmine and Jest test cases |
+| Documentation | Generate README files and technical documentation |
+| Architecture analysis | Understand application architecture |
+| Problem solving | Suggest implementation approaches |
+| Automation | Perform multi-step coding tasks |
+
+**Important:** The API key provides access to the AI service. It does not automatically grant access to every model or application feature. Access depends on organization permissions, gateway configuration, model availability, and usage policies.
+
+## 3. How API Key Authentication Works
+
+Typical request flow:
+
+Developer
+    |
+    v
+Claude Code CLI
+    |
+    | API Key + Prompt
+    v
+Company AI Gateway
+    |
+    | Validate credentials
+    | Apply organization policies
+    | Route model request
+    v
+Claude Model
+    |
+    | AI Response
+    v
+Company AI Gateway
+    |
+    v
+Claude Code CLI
+    |
+    v
+Developer
+
+### Explanation
+
+1. Developer starts Claude Code in the terminal.
+2. Claude Code reads the configured authentication credentials.
+3. Claude Code sends the prompt to the configured API endpoint.
+4. The company gateway validates the credentials.
+5. The gateway routes the request to the supported Claude model.
+6. The model processes the request.
+7. The response is returned to Claude Code.
+
+## 4. Company AI Gateway Configuration
+
+In our organization, we use a company-provided API key and a company-specific API endpoint.
+
+A custom endpoint is required when the organization routes Claude Code requests through its own AI gateway instead of directly connecting to Anthropic's public API.
+
+### Important Environment Variables
+
+| Environment Variable | Purpose |
+|---|---|
+| `ANTHROPIC_API_KEY` | API key used for authentication |
+| `ANTHROPIC_BASE_URL` | Custom API endpoint or gateway URL |
+| `ANTHROPIC_AUTH_TOKEN` | Alternative authentication token, if required |
+| `ANTHROPIC_MODEL` | Optional model override, if supported by the gateway |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | Optional default Opus model override |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | Optional default Sonnet model override |
+
+Use only the variables required by your organization's configuration.
+
+### Configure Company API Endpoint
+
+```bash
+export ANTHROPIC_BASE_URL="https://your-company-gateway-url"
+export ANTHROPIC_API_KEY="your-company-api-key"
+```
+
+The URL above is a placeholder. Use the actual endpoint provided by DevOps.
+
+If the organization requires Bearer token authentication instead:
+
+```bash
+export ANTHROPIC_BASE_URL="https://your-company-gateway-url"
+export ANTHROPIC_AUTH_TOKEN="your-company-token"
+```
+
+Do not configure both authentication methods unless DevOps explicitly instructs you to.
+
+### Verify Configuration
+
+```bash
+if [ -n "$ANTHROPIC_BASE_URL" ]; then
+  echo "Company endpoint configured"
+else
+  echo "Company endpoint missing"
+fi
+
+if [ -n "$ANTHROPIC_API_KEY" ]; then
+  echo "API key configured"
+else
+  echo "API key missing"
+fi
+```
+
+### Configure Permanently on macOS (Zsh)
+
+Open the shell configuration file:
+
+```bash
+nano ~/.zshrc
+```
+
+Add the approved environment variables:
+
+```bash
+export ANTHROPIC_BASE_URL="https://your-company-gateway-url"
+export ANTHROPIC_API_KEY="your-company-api-key"
+```
+
+Save and reload:
+
+```bash
+source ~/.zshrc
+```
+
+**Security recommendations:**
+
+- Never commit API keys to GitHub or GitLab.
+- Never share API keys in screenshots or chat messages.
+- Never print secrets in terminal logs.
+- Use company-approved secret management practices.
+- Do not use personal API keys for company projects without approval.
+- Rotate credentials when required by your organization.
+
+## 5. Start Claude Code Using Company Configuration
+
+Navigate to the project:
+
+```bash
+cd /path/to/your/project
+```
+
+Start Claude Code:
+
+```bash
+claude
+```
+
+Check authentication:
+
+```text
+/status
+```
+
+Check available model:
+
+```text
+/model
+```
+
+Check CLI configuration:
+
+```text
+/config
+```
+
+## 6. Common Authentication Errors
+
+| Error | Possible Reason | What to Check |
+|---|---|---|
+| Invalid API key | Incorrect, expired, or revoked key | Verify with DevOps |
+| HTTP 401 | Authentication rejected | Check key and authentication method |
+| HTTP 403 | Access or permission denied | Check organization permissions |
+| HTTP 404 | Incorrect endpoint or route | Verify gateway URL and supported API routes |
+| Model not found | Model unavailable or incorrect model ID | Check supported model names |
+| Connection timeout | Network or gateway connectivity issue | Check VPN, network, and gateway availability |
+
+## 7. Key Takeaways
+
+- API keys authenticate applications with AI services.
+- Claude Code uses API credentials to communicate with AI models.
+- `ANTHROPIC_API_KEY` configures the API key.
+- `ANTHROPIC_BASE_URL` configures the custom company endpoint.
+- A company gateway can centralize authentication, routing, monitoring, and policy enforcement.
+- Model access depends on organizational permissions and gateway configuration.
+- API keys must always be protected like passwords.
+
 
 **Security best practices:**
 - Never commit API keys to Git.
