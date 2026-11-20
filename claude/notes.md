@@ -948,6 +948,7 @@ Important: Agentic behavior does not mean unlimited autonomy. Tool permissions, 
 ---
 
 # 8. CLAUDE.md – Project Instructions
+https://lnkd.in/p/d-AcvGFG
 
 ## What is CLAUDE.md?
 
